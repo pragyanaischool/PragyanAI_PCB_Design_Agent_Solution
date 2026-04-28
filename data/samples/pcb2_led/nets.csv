@@ -1,0 +1,4 @@
+net,connections
+VCC,"R1:1"
+LED_SIG,"R1:2,D1:A"
+GND,"D1:K"
