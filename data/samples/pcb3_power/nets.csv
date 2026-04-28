@@ -1,0 +1,4 @@
+net,connections
+VIN,"U1:IN,C1:1"
+VOUT,"U1:OUT,C2:1"
+GND,"U1:GND,C1:2,C2:2"
