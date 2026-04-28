@@ -1,0 +1,6 @@
+net,connections
+VCC,"U1:VCC,C1:1"
+GND,"U1:GND,C1:2"
+INPUT,"U1:IN+,R1:1"
+FEEDBACK,"U1:OUT,R2:1"
+OUTPUT,"U1:OUT"
