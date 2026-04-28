@@ -1,0 +1,4 @@
+ref,value,footprint,pins
+U1,ATmega328P,Package_QFP:TQFP-32,"VCC,GND,PB0,PB1,RESET"
+C1,100nF,Capacitor_SMD:C_0603,"1,2"
+R1,10k,Resistor_SMD:R_0805,"1,2"
