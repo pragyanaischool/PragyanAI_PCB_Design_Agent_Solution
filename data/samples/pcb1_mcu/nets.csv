@@ -1,0 +1,5 @@
+net,connections
+VCC,"U1:VCC,C1:1"
+GND,"U1:GND,C1:2"
+RESET,"U1:RESET,R1:1"
+SIGNAL,"U1:PB0,R1:2"
