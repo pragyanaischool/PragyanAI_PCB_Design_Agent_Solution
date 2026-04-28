@@ -1,0 +1,56 @@
+{
+  "default": {
+    "min_trace_width": 0.2,
+    "min_clearance": 0.2,
+    "min_via_diameter": 0.6,
+    "via_drill": 0.3,
+    "max_trace_length": 200,
+    "impedance_control": false
+  },
+
+  "nets": {
+    "VCC": {
+      "min_trace_width": 0.5,
+      "priority": "high"
+    },
+    "GND": {
+      "min_trace_width": 0.6,
+      "priority": "high"
+    },
+    "SIGNAL": {
+      "min_trace_width": 0.2,
+      "priority": "medium"
+    },
+    "CLOCK": {
+      "min_trace_width": 0.3,
+      "max_length": 50,
+      "matched_length": true
+    }
+  },
+
+  "components": {
+    "atmega328": {
+      "placement": "center",
+      "thermal": false
+    },
+    "lm358": {
+      "placement": "signal_zone"
+    },
+    "mosfet": {
+      "thermal": true,
+      "heat_sink": true
+    },
+    "regulator": {
+      "thermal": true,
+      "placement": "edge"
+    }
+  },
+
+  "layout": {
+    "keepout_zones": [
+      {"x1": 0, "y1": 0, "x2": 10, "y2": 10}
+    ],
+    "board_margin": 5,
+    "grid_size": 1
+  }
+}
