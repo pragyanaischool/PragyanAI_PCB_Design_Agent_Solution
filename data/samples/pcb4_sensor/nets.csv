@@ -1,0 +1,5 @@
+net,connections
+VCC,"U1:VCC,R1:1,R2:1"
+GND,"U1:GND"
+SDA,"U1:SDA,R1:2"
+SCL,"U1:SCL,R2:2"
