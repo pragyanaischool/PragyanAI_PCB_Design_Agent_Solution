@@ -1,0 +1,30 @@
+#db/symbol_pins.json
+{
+  "ATMEGA328": ["VCC", "GND", "PB0", "PB1", "PB2", "PB3", "PB4", "PB5", "RESET"],
+  "ATMEGA328P": ["VCC", "GND", "PB0", "PB1", "PB2", "PB3", "PB4", "PB5", "RESET"],
+  
+  "STM32F103": ["VDD", "VSS", "PA0", "PA1", "PA2", "PA3", "PB0", "PB1"],
+  
+  "OPAMP": ["IN+", "IN-", "OUT", "VCC", "GND"],
+  "LM358": ["OUT1", "IN1-", "IN1+", "VCC", "IN2+", "IN2-", "OUT2", "GND"],
+
+  "MOSFET": ["G", "D", "S"],
+  "BJT": ["C", "B", "E"],
+
+  "DIODE": ["A", "K"],
+  "LED": ["A", "K"],
+
+  "RESISTOR": ["1", "2"],
+  "CAPACITOR": ["1", "2"],
+
+  "CRYSTAL": ["1", "2"],
+  "SWITCH": ["1", "2"],
+
+  "_aliases": {
+    "10K": "RESISTOR",
+    "1K": "RESISTOR",
+    "100NF": "CAPACITOR",
+    "1UF": "CAPACITOR",
+    "CERAMIC CAP": "CAPACITOR"
+  }
+}
