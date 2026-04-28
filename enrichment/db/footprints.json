@@ -1,0 +1,36 @@
+{
+  "10k": "Resistor_SMD:R_0805",
+  "1k": "Resistor_SMD:R_0805",
+  "100k": "Resistor_SMD:R_0805",
+
+  "100nf": "Capacitor_SMD:C_0603",
+  "1uf": "Capacitor_SMD:C_0805",
+
+  "led": "LED_SMD:LED_0805",
+  "diode": "Diode_SMD:D_SOD-123",
+
+  "atmega328": "Package_QFP:TQFP-32",
+  "atmega328p": "Package_QFP:TQFP-32",
+
+  "stm32f103": "Package_QFP:LQFP-48",
+
+  "lm358": "Package_SO:SOIC-8",
+
+  "mosfet": "Package_TO_SOT_SMD:SOT-23",
+  "bjt": "Package_TO_SOT_SMD:SOT-23",
+
+  "crystal": "Crystal:Crystal_SMD_3225-4Pin",
+
+  "_patterns": {
+    ".*tqfp[-_ ]?32": "Package_QFP:TQFP-32",
+    ".*lqfp[-_ ]?48": "Package_QFP:LQFP-48",
+    ".*sot[-_ ]?23": "Package_TO_SOT_SMD:SOT-23",
+    ".*0603": "Resistor_SMD:R_0603",
+    ".*0805": "Resistor_SMD:R_0805"
+  },
+
+  "_aliases": {
+    "res": "Resistor_SMD:R_0805",
+    "cap": "Capacitor_SMD:C_0603"
+  }
+}
