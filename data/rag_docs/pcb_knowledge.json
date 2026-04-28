@@ -1,0 +1,18 @@
+[
+  {
+    "text": "Resistors limit current in circuits",
+    "metadata": {"type": "concept"}
+  },
+  {
+    "text": "Capacitors smooth voltage and filter noise",
+    "metadata": {"type": "concept"}
+  },
+  {
+    "text": "ATmega328P is a microcontroller used in Arduino",
+    "metadata": {"type": "component"}
+  },
+  {
+    "text": "LM358 is a dual operational amplifier",
+    "metadata": {"type": "component"}
+  }
+]
