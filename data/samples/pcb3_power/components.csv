@@ -1,0 +1,4 @@
+ref,value,footprint,pins
+U1,7805,Package_TO_SOT_SMD:SOT-223,"IN,GND,OUT"
+C1,100uF,Capacitor_SMD:C_0805,"1,2"
+C2,100nF,Capacitor_SMD:C_0603,"1,2"
