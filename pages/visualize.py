@@ -2,8 +2,8 @@
 
 import streamlit as st
 
-from app.components.pcb_viewer import interactive_view, show_pcb
-from app.utils import get_design, show_info
+from components.pcb_viewer import interactive_view, show_pcb
+from utils import get_design, show_info
 
 
 # --------------------------------------------------
