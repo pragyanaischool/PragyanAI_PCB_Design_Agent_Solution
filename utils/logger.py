@@ -135,3 +135,6 @@ def log_system_info():
     logger.info("===================")
 def show_success(message: str):
     st.success(message)
+def show_error(message: str):
+    import streamlit as st
+    st.error(message)
