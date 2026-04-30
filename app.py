@@ -22,18 +22,21 @@ def init_session():
         "chat_history": [],
         "rag_ingested": False
     }
-
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
 
-
 init_session()
 
 # --------------------------------------------------
-# HEADER (FIXED)
+# HEADER (HARDENED)
 # --------------------------------------------------
 def render_header():
+    # 🔥 Make header idempotent within a single run
+    if st.session_state.get("_header_rendered", False):
+        return
+    st.session_state["_header_rendered"] = True
+
     col1, col2 = st.columns([8, 2])
 
     with col1:
@@ -41,27 +44,28 @@ def render_header():
         st.caption("End-to-End AI Powered PCB Design System")
 
     with col2:
-        # ✅ FIX: Add UNIQUE key
+        # 🔥 Unique key + safe reset (don’t delete internal keys)
         if st.button("🧹 Reset App", key="reset_app_btn"):
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
+            # Only clear your app’s keys
+            keep = {"_header_rendered"}  # keep guard to avoid duplicate render in same cycle
+            for k in list(st.session_state.keys()):
+                if k not in keep:
+                    del st.session_state[k]
             st.rerun()
 
-
-# ✅ Render ONCE
+# Render header once per run
 render_header()
 
 # --------------------------------------------------
-# SIDEBAR NAVIGATION (FIXED)
+# SIDEBAR NAVIGATION
 # --------------------------------------------------
 def render_sidebar():
     st.sidebar.title("📂 Navigation")
 
-    # ✅ FIX: add key
     page = st.sidebar.radio(
         "Go to",
         ["Upload", "Chat", "Visualize", "Download"],
-        key="nav_radio"
+        key="nav_radio"  # unique key
     )
 
     st.sidebar.markdown("---")
@@ -76,11 +80,10 @@ def render_sidebar():
 
     return page
 
-
 page = render_sidebar()
 
 # --------------------------------------------------
-# PAGE ROUTING (CRITICAL FIX)
+# PAGE ROUTING (SAFE IMPORT)
 # --------------------------------------------------
 def load_page(page_name: str):
     page_map = {
@@ -91,24 +94,21 @@ def load_page(page_name: str):
     }
 
     module_name = page_map.get(page_name)
-
     if not module_name:
         st.error("Unknown page")
         return
 
     try:
-        # ✅ FIX: Safe dynamic import (prevents duplicate execution)
         module = importlib.import_module(f"app.pages.{module_name}")
 
-        # Ensure run() exists
+        # 🔥 Ensure each page exposes run()
         if hasattr(module, "run"):
             module.run()
         else:
-            st.error(f"{module_name}.py missing run() function")
+            st.error(f"{module_name}.py must define run()")
 
     except Exception as e:
         st.error(f"Error loading page: {e}")
-
 
 load_page(page)
 
@@ -120,6 +120,5 @@ def render_footer():
     st.caption(
         "⚙️ Built with AI | Parsing → Enrichment → Layout → Routing → DRC → RAG"
     )
-
 
 render_footer()
