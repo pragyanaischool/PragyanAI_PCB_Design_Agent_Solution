@@ -19,6 +19,28 @@ def is_supported_file(file_path: str, allowed_ext: List[str]) -> bool:
     return get_file_extension(file_path) in allowed_ext
 
 
+def save_uploaded_file(uploaded_file, save_dir) -> Path:
+    # Convert string → Path
+    if isinstance(save_dir, str):
+        save_dir = Path(save_dir)
+
+    # Ensure directory exists
+    save_dir.mkdir(parents=True, exist_ok=True)
+
+    # Validate file
+    if uploaded_file is None:
+        raise ValueError("No file uploaded")
+
+    # Clean filename
+    filename = Path(uploaded_file.name).name
+
+    file_path = save_dir / filename
+
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+
+    return file_path
+'''
 def save_uploaded_file(uploaded_file, save_dir: Path) -> Path:
     """Save Streamlit uploaded file"""
     ensure_dir(save_dir)
@@ -29,7 +51,7 @@ def save_uploaded_file(uploaded_file, save_dir: Path) -> Path:
         f.write(uploaded_file.getbuffer())
 
     return file_path
-
+'''
 
 def list_files(directory: Path, extension: str = None) -> List[Path]:
     """List files optionally filtered by extension"""
