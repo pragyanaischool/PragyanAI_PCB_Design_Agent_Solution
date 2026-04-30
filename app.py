@@ -1,9 +1,10 @@
 # app/app.py
 
 import streamlit as st
+import importlib
 
 # --------------------------------------------------
-# APP CONFIG
+# APP CONFIG (ONLY ONCE)
 # --------------------------------------------------
 st.set_page_config(
     page_title="PCB AI Copilot",
@@ -30,7 +31,7 @@ def init_session():
 init_session()
 
 # --------------------------------------------------
-# HEADER
+# HEADER (FIXED)
 # --------------------------------------------------
 def render_header():
     col1, col2 = st.columns([8, 2])
@@ -40,28 +41,31 @@ def render_header():
         st.caption("End-to-End AI Powered PCB Design System")
 
     with col2:
-        if st.button("🧹 Reset App"):
+        # ✅ FIX: Add UNIQUE key
+        if st.button("🧹 Reset App", key="reset_app_btn"):
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()
 
 
+# ✅ Render ONCE
 render_header()
 
 # --------------------------------------------------
-# SIDEBAR NAVIGATION
+# SIDEBAR NAVIGATION (FIXED)
 # --------------------------------------------------
 def render_sidebar():
     st.sidebar.title("📂 Navigation")
 
+    # ✅ FIX: add key
     page = st.sidebar.radio(
         "Go to",
-        ["Upload", "Chat", "Visualize", "Download"]
+        ["Upload", "Chat", "Visualize", "Download"],
+        key="nav_radio"
     )
 
     st.sidebar.markdown("---")
 
-    # Quick status
     if st.session_state.get("design"):
         st.sidebar.success("✅ Design Loaded")
     else:
@@ -76,22 +80,34 @@ def render_sidebar():
 page = render_sidebar()
 
 # --------------------------------------------------
-# PAGE ROUTING
+# PAGE ROUTING (CRITICAL FIX)
 # --------------------------------------------------
 def load_page(page_name: str):
-    if page_name == "Upload":
-        from app.pages import upload as page_module
-    elif page_name == "Chat":
-        from app.pages import chat as page_module
-    elif page_name == "Visualize":
-        from app.pages import visualize as page_module
-    elif page_name == "Download":
-        from app.pages import download as page_module
-    else:
+    page_map = {
+        "Upload": "upload",
+        "Chat": "chat",
+        "Visualize": "visualize",
+        "Download": "download"
+    }
+
+    module_name = page_map.get(page_name)
+
+    if not module_name:
         st.error("Unknown page")
         return
 
-    page_module.run()
+    try:
+        # ✅ FIX: Safe dynamic import (prevents duplicate execution)
+        module = importlib.import_module(f"app.pages.{module_name}")
+
+        # Ensure run() exists
+        if hasattr(module, "run"):
+            module.run()
+        else:
+            st.error(f"{module_name}.py missing run() function")
+
+    except Exception as e:
+        st.error(f"Error loading page: {e}")
 
 
 load_page(page)
