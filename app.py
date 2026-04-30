@@ -105,7 +105,7 @@ def load_page(page_name: str):
         return
 
     try:
-        module = importlib.import_module(f"app.pages.{module_name}")
+        module = importlib.import_module(f"pages.{module_name}")
 
         # 🔥 Ensure each page exposes run()
         if hasattr(module, "run"):
