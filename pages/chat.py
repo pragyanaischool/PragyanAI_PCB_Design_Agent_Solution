@@ -2,9 +2,9 @@
 
 import streamlit as st
 
-from app.components.chat_panel import render_chat, clear_chat
-from app.core.chat_engine import ingest_design, store
-from app.utils import get_design, show_info, show_error
+from components.chat_panel import render_chat, clear_chat
+from core.chat_engine import ingest_design, store
+from utils import get_design, show_info, show_error
 
 
 # --------------------------------------------------
