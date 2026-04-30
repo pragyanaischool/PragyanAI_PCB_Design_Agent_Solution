@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 import uuid
 
-from app.utils import save_uploaded_file, show_success, show_error
+from utils import save_uploaded_file, show_success, show_error
 
 
 # --------------------------------------------------
