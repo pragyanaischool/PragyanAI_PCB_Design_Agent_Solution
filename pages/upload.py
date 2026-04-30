@@ -3,9 +3,9 @@
 import streamlit as st
 import time
 
-from app.components.uploader import uploader
-from app.core.pipeline import run_pipeline
-from app.utils import (
+from components.uploader import uploader
+from core.pipeline import run_pipeline
+from utils import (
     set_design,
     get_design,
     show_success,
