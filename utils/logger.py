@@ -133,3 +133,5 @@ def log_system_info():
     logger.info(f"MODEL: {settings.LLM_MODEL}")
     logger.info(f"OUTPUT DIR: {settings.OUTPUT_DIR}")
     logger.info("===================")
+def show_success(message: str):
+    st.success(message)
