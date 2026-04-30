@@ -55,7 +55,7 @@ def upload_single_file():
             show_error("Unsupported file type")
             return None
 
-        path = save_uploaded_file(file,  "data/uploads")
+        path = save_uploaded_file(file,  Path("data/uploads"))
 
         show_success(f"Uploaded {file.name} ({file_type})")
 
