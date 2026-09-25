@@ -8,7 +8,7 @@ import importlib
 # --------------------------------------------------
 st.set_page_config(
     page_title="PragyanAI - PCB AI Copilot",
-    page_icon="🧠",
+    page_icon=" ",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -43,7 +43,7 @@ def render_header():
         st.caption("End-to-End AI Powered PCB Design System")
 
     with col2:
-        if st.button("🧹 Reset App", key="reset_app_btn"):
+        if st.button("Reset App", key="reset_app_btn"):
             keys_to_keep = {"_header_rendered", "_sidebar_rendered"}
 
             for key in list(st.session_state.keys()):
