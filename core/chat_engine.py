@@ -106,7 +106,7 @@ def call_llm(prompt: str) -> str:
     if GROQ_ENABLED and client:
         try:
             response = client.chat.completions.create(
-                model="llama3-70b-8192",
+                model="openai/gpt-oss-120b",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.2
             )
