@@ -39,7 +39,6 @@ def render_header():
     col1, col2 = st.columns([8, 2])
 
     with col1:
-        st.title(" PragyanAI PCB AI Copilot")
         st.caption("End-to-End AI Powered PCB Design System")
 
     with col2:
