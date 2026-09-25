@@ -8,11 +8,17 @@ import importlib
 # --------------------------------------------------
 st.set_page_config(
     page_title="PragyanAI - PCB AI Copilot",
-    page_icon=" ",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-st.image("PragyanAI_Transperent.png")
+
+# Optional logo handling if the file exists
+try:
+    st.image("PragyanAI_Transperent.png", width=250)
+except Exception:
+    pass
+
 # --------------------------------------------------
 # SESSION INIT
 # --------------------------------------------------
@@ -58,19 +64,13 @@ render_header()
 # SIDEBAR NAVIGATION
 # --------------------------------------------------
 def render_sidebar():
-    #  Prevent duplicate sidebar rendering
-    if st.session_state.get("_sidebar_rendered", False):
-        return st.session_state.get("_selected_page", "Upload")
-    
-    st.image("PragyanAI_Transperent.png")
-    st.session_state["_sidebar_rendered"] = True
-    
-    st.sidebar.title(" Navigation")
+    # Prevent duplicate sidebar rendering flags if needed
+    st.sidebar.title("🧭 Navigation")
 
     page = st.sidebar.radio(
         "Go to",
         ["Upload", "Chat", "Visualize", "Download"],
-        key="nav_radio_unique"   # 🔥 also change key
+        key="nav_radio_unique"
     )
 
     # Store selected page safely
@@ -81,10 +81,10 @@ def render_sidebar():
     if st.session_state.get("design"):
         st.sidebar.success("✅ Design Loaded")
     else:
-        st.sidebar.warning("⚠️ No Design")
+        st.sidebar.warning("⚠️ No Design Loaded")
 
     st.sidebar.markdown("---")
-    st.sidebar.caption(" AI PCB Engine")
+    st.sidebar.caption("🤖 AI PCB Engine Core")
 
     return page
 
@@ -101,22 +101,23 @@ def load_page(page_name: str):
 
     module_name = page_map.get(page_name)
     if not module_name:
-        st.error("Unknown page")
+        st.error("Unknown page route requested.")
         return
 
     try:
         module = importlib.import_module(f"pages.{module_name}")
 
-        # 🔥 Ensure each page exposes run()
+        # Ensure each sub-page exposes a run() entry function
         if hasattr(module, "run"):
             module.run()
         else:
-            st.error(f"{module_name}.py must define run()")
+            st.error(f"Module `pages/{module_name}.py` must define a `run()` function.")
 
     except Exception as e:
-        st.error(f"Error loading page: {e}")
+        st.error(f"Error loading page '{page_name}': {e}")
 
-page = render_sidebar()  # 2️⃣ sidebar renders ← HERE
+# Execute Sidebar & Page Loading Router
+page = render_sidebar()
 load_page(page)
 
 # --------------------------------------------------
@@ -125,7 +126,7 @@ load_page(page)
 def render_footer():
     st.markdown("---")
     st.caption(
-        " Built with AI | Parsing → Enrichment → Layout → Routing → DRC → RAG"
+        "⚡ Built with AI | Parsing → Enrichment → Layout → Routing → DRC → RAG"
     )
 
 render_footer()
