@@ -37,7 +37,7 @@ def _run_pipeline_with_ui(file_data):
 
         time.sleep(0.2)
 
-        status.info("🔍 Parsing & normalization...")
+        status.info(" Parsing & normalization...")
         progress.progress(30)
 
         time.sleep(0.2)
