@@ -7,7 +7,7 @@ import importlib
 # APP CONFIG (ONLY ONCE)
 # --------------------------------------------------
 st.set_page_config(
-    page_title="PCB AI Copilot",
+    page_title="PragyanAI - PCB AI Copilot",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -39,7 +39,7 @@ def render_header():
     col1, col2 = st.columns([8, 2])
 
     with col1:
-        st.title("🤖 PCB AI Copilot")
+        st.title(" PragyanAI PCB AI Copilot")
         st.caption("End-to-End AI Powered PCB Design System")
 
     with col2:
@@ -59,13 +59,14 @@ render_header()
 # SIDEBAR NAVIGATION
 # --------------------------------------------------
 def render_sidebar():
-    # 🔥 Prevent duplicate sidebar rendering
+    #  Prevent duplicate sidebar rendering
     if st.session_state.get("_sidebar_rendered", False):
         return st.session_state.get("_selected_page", "Upload")
-
+    
+    st.image("PragyanAI_Transperent.png")
     st.session_state["_sidebar_rendered"] = True
-
-    st.sidebar.title("📂 Navigation")
+    
+    st.sidebar.title(" Navigation")
 
     page = st.sidebar.radio(
         "Go to",
@@ -84,7 +85,7 @@ def render_sidebar():
         st.sidebar.warning("⚠️ No Design")
 
     st.sidebar.markdown("---")
-    st.sidebar.caption("🚀 AI PCB Engine")
+    st.sidebar.caption(" AI PCB Engine")
 
     return page
 
@@ -125,7 +126,7 @@ load_page(page)
 def render_footer():
     st.markdown("---")
     st.caption(
-        "⚙️ Built with AI | Parsing → Enrichment → Layout → Routing → DRC → RAG"
+        " Built with AI | Parsing → Enrichment → Layout → Routing → DRC → RAG"
     )
 
 render_footer()
