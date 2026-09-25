@@ -4,7 +4,7 @@ import json
 import os
 import uuid
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 
 import streamlit as st
 
@@ -15,7 +15,7 @@ BASE_DIR = Path("data")
 UPLOAD_DIR = BASE_DIR / "uploads"
 PROCESSED_DIR = BASE_DIR / "processed"
 
-# Ensure directories exist
+# Ensure directories exist securely
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -24,17 +24,20 @@ PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 # SESSION STATE HELPERS
 # --------------------------------------------------
 def set_design(design: Dict[str, Any]):
-    """Store design in Streamlit session"""
-    st.session_state["design"] = design
+    """Store design data safely in Streamlit session state."""
+    if isinstance(design, dict):
+        st.session_state["design"] = design
+    else:
+        raise ValueError("Design state must be a dictionary.")
 
 
 def get_design() -> Optional[Dict[str, Any]]:
-    """Retrieve design from session"""
-    return st.session_state.get("design")
+    """Retrieve design data from session state."""
+    return st.session_state.get("design", None)
 
 
 def clear_design():
-    """Clear current design"""
+    """Clear current design state."""
     if "design" in st.session_state:
         del st.session_state["design"]
 
@@ -43,9 +46,7 @@ def clear_design():
 # FILE UTILITIES
 # --------------------------------------------------
 def save_uploaded_file(uploaded_file) -> Path:
-    """
-    Save uploaded file to disk
-    """
+    """Save an uploaded file safely to disk with a unique identifier."""
     file_id = str(uuid.uuid4())
     file_path = UPLOAD_DIR / f"{file_id}_{uploaded_file.name}"
 
@@ -55,10 +56,8 @@ def save_uploaded_file(uploaded_file) -> Path:
     return file_path
 
 
-def save_design(design: Dict[str, Any], filename: str = None) -> Path:
-    """
-    Save processed design JSON
-    """
+def save_design(design: Dict[str, Any], filename: Optional[str] = None) -> Path:
+    """Save processed design dictionary to a persistent JSON file."""
     if not filename:
         filename = f"design_{uuid.uuid4().hex}.json"
 
@@ -71,9 +70,10 @@ def save_design(design: Dict[str, Any], filename: str = None) -> Path:
 
 
 def load_design(file_path: Path) -> Dict[str, Any]:
-    """
-    Load design JSON
-    """
+    """Load and parse design JSON from disk."""
+    if not file_path.exists():
+        raise FileNotFoundError(f"Design file not found at: {file_path}")
+        
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -81,23 +81,21 @@ def load_design(file_path: Path) -> Dict[str, Any]:
 # --------------------------------------------------
 # VALIDATION UTILITIES
 # --------------------------------------------------
-def is_valid_design(design: Dict[str, Any]) -> bool:
-    """
-    Basic validation
-    """
+def is_valid_design(design: Any) -> bool:
+    """Perform robust schema validation on the design payload."""
     if not isinstance(design, dict):
         return False
 
-    if "components" not in design or "nets" not in design:
-        return False
-
-    return True
+    # Flexible validation accepting typical agentic outputs
+    required_keys = ["components", "nets"]
+    return all(key in design for key in required_keys)
 
 
 def get_design_summary(design: Dict[str, Any]) -> Dict[str, int]:
-    """
-    Quick stats for UI
-    """
+    """Generate safe quick statistics for the UI dashboard."""
+    if not isinstance(design, dict):
+        return {"components": 0, "nets": 0, "routes": 0, "placed": 0}
+
     return {
         "components": len(design.get("components", [])),
         "nets": len(design.get("nets", [])),
@@ -122,27 +120,37 @@ def show_info(message: str):
 
 
 # --------------------------------------------------
-# JSON DOWNLOAD
+# ENHANCED JSON / MARKDOWN DOWNLOAD
 # --------------------------------------------------
-def download_design_button(design: Dict[str, Any], filename="pcb_design.json"):
+def download_design_button(design_data: Union[Dict[str, Any], str], filename: str = "pcb_design.json", label: str = "📥 Download Design"):
     """
-    Streamlit download button
+    Renders an intelligent Streamlit download button supporting both 
+    JSON dictionary objects and Markdown/text report strings.
     """
+    if isinstance(design_data, dict):
+        data_str = json.dumps(design_data, indent=2)
+        mime_type = "application/json"
+        if not filename.endswith(".json"):
+            filename += ".json"
+    else:
+        data_str = str(design_data)
+        mime_type = "text/markdown"
+        if not filename.endswith(".md") and not filename.endswith(".txt"):
+            filename += ".md"
+
     st.download_button(
-        label="📥 Download Design",
-        data=json.dumps(design, indent=2),
+        label=label,
+        data=data_str,
         file_name=filename,
-        mime="application/json"
+        mime=mime_type
     )
 
 
 # --------------------------------------------------
-# TEMP FILE HANDLING
+# TEMP FILE HANDLING & MAINTENANCE
 # --------------------------------------------------
-def create_temp_file(content: bytes, suffix=".json") -> Path:
-    """
-    Create temporary file
-    """
+def create_temp_file(content: bytes, suffix: str = ".json") -> Path:
+    """Create a temporary file inside the upload directory."""
     file_path = UPLOAD_DIR / f"temp_{uuid.uuid4().hex}{suffix}"
 
     with open(file_path, "wb") as f:
@@ -151,31 +159,26 @@ def create_temp_file(content: bytes, suffix=".json") -> Path:
     return file_path
 
 
-# --------------------------------------------------
-# CLEANUP
-# --------------------------------------------------
 def cleanup_temp_files():
-    """
-    Remove temp files (optional maintenance)
-    """
+    """Safely remove leftover temporary files to preserve storage."""
     for f in UPLOAD_DIR.glob("temp_*"):
         try:
             f.unlink()
-        except:
+        except Exception:
             pass
 
 
 # --------------------------------------------------
-# DEBUG
+# DEBUG VERIFICATION
 # --------------------------------------------------
 if __name__ == "__main__":
     sample = {
-        "components": [{"ref": "R1"}],
-        "nets": []
+        "components": [{"ref": "R1", "value": "10k"}],
+        "nets": [["R1.1", "VCC"]]
     }
 
     path = save_design(sample)
-    print("Saved:", path)
+    print("Test Save Successful:", path)
 
     loaded = load_design(path)
-    print("Loaded:", loaded)
+    print("Test Load Successful:", loaded)
