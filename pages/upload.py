@@ -20,7 +20,7 @@ from utils import (
 # UI HEADER
 # --------------------------------------------------
 def _header():
-    st.header("📤 Upload & Process PCB Design")
+    st.header(" Upload & Process PCB Design")
     st.caption("Upload JSON / CSV / KiCad / Altium → Auto Design Pipeline")
 
 
@@ -32,7 +32,7 @@ def _run_pipeline_with_ui(file_data):
     status = st.empty()
 
     try:
-        status.info("📥 Reading input...")
+        status.info(" Reading input...")
         progress.progress(10)
 
         time.sleep(0.2)
@@ -42,12 +42,12 @@ def _run_pipeline_with_ui(file_data):
 
         time.sleep(0.2)
 
-        status.info("🧠 Enrichment (pins + footprints)...")
+        status.info(" Enrichment (pins + footprints)...")
         progress.progress(50)
 
         time.sleep(0.2)
 
-        status.info("📐 Layout + Routing...")
+        status.info(" Layout + Routing...")
         progress.progress(70)
 
         time.sleep(0.2)
@@ -78,7 +78,7 @@ def _run_pipeline_with_ui(file_data):
 # DESIGN PREVIEW
 # --------------------------------------------------
 def _preview_design(design):
-    st.subheader("📄 Design Preview")
+    st.subheader(" Design Preview")
 
     summary = get_design_summary(design)
 
@@ -89,7 +89,7 @@ def _preview_design(design):
     col3.metric("Routes", summary["routes"])
     col4.metric("Placed", summary["placed"])
 
-    with st.expander("🔍 View Full JSON"):
+    with st.expander(" View Full JSON"):
         st.json(design)
 
 
@@ -107,7 +107,7 @@ def run():
         return
 
     # Process button
-    if st.button("🚀 Run PCB Pipeline", use_container_width=True):
+    if st.button(" Run PCB Pipeline", use_container_width=True):
         try:
             design = _run_pipeline_with_ui(file_data)
 
@@ -130,17 +130,17 @@ def run():
 
     if existing_design:
         st.divider()
-        st.subheader("📦 Current Loaded Design")
+        st.subheader(" Current Loaded Design")
 
         _preview_design(existing_design)
 
         # Save option
-        if st.button("💾 Save Design"):
+        if st.button(" Save Design"):
             path = save_design(existing_design)
             show_success(f"Saved at: {path}")
 
         # Reset option
-        if st.button("🧹 Clear Design"):
+        if st.button(" Clear Design"):
             st.session_state.pop("design", None)
             st.rerun()
           
