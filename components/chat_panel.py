@@ -106,14 +106,14 @@ def generate_response(prompt: str) -> str:
 def render_chat(design=None, rag_store=None):
     init_chat()
 
-    st.subheader("💬 PCB AI Chat")
+    st.subheader("PragyanAI PCB AI Chat")
 
     # Display chat history
     for msg in get_chat_history():
         if msg["role"] == "user":
-            st.markdown(f"**🧑 You:** {msg['content']}")
+            st.markdown(f"** You:** {msg['content']}")
         else:
-            st.markdown(f"**🤖 AI:** {msg['content']}")
+            st.markdown(f"** AI:** {msg['content']}")
 
     # Input box
     user_input = st.chat_input("Ask about your PCB design...")
@@ -137,11 +137,11 @@ def render_chat(design=None, rag_store=None):
     # Controls
     col1, col2 = st.columns(2)
 
-    if col1.button("🧹 Clear Chat"):
+    if col1.button(" Clear Chat"):
         clear_chat()
         st.rerun()
 
-    if col2.button("📊 Show Context"):
+    if col2.button(" Show Context"):
         st.write("### Debug Context")
         if rag_store:
             st.json(rag_store.data)
