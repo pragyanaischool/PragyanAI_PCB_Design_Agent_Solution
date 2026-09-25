@@ -53,7 +53,7 @@ def _export_gerber_stub(design):
 # PREVIEW PANEL
 # --------------------------------------------------
 def _preview(design):
-    st.subheader("📄 Design Preview")
+    st.subheader(" Design Preview")
 
     with st.expander("View JSON"):
         st.json(design)
@@ -63,13 +63,13 @@ def _preview(design):
 # EXPORT OPTIONS
 # --------------------------------------------------
 def _export_options(design):
-    st.subheader("📦 Export Options")
+    st.subheader(" Export Options")
 
     col1, col2 = st.columns(2)
 
     # JSON
     with col1:
-        st.write("### 📄 JSON")
+        st.write("###  JSON")
         json_data = _export_json(design)
         st.download_button(
             "Download JSON",
@@ -80,7 +80,7 @@ def _export_options(design):
 
     # BOM
     with col2:
-        st.write("### 📋 BOM")
+        st.write("###  BOM")
         bom_data = _export_bom(design)
         st.download_button(
             "Download BOM (CSV)",
@@ -95,7 +95,7 @@ def _export_options(design):
 
     # KiCad
     with col3:
-        st.write("### 🛠 KiCad")
+        st.write("###  KiCad")
         kicad_data = _export_kicad_stub(design)
         st.download_button(
             "Download KiCad PCB",
@@ -106,7 +106,7 @@ def _export_options(design):
 
     # Gerber
     with col4:
-        st.write("### 🏭 Gerber")
+        st.write("###  Gerber")
         gerber_data = _export_gerber_stub(design)
         st.download_button(
             "Download Gerber",
@@ -120,7 +120,7 @@ def _export_options(design):
 # SAVE TO SERVER
 # --------------------------------------------------
 def _save_server(design):
-    st.subheader("💾 Save to Server")
+    st.subheader(" Save to Server")
 
     filename = f"pcb_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
 
@@ -133,7 +133,7 @@ def _save_server(design):
 # SUMMARY
 # --------------------------------------------------
 def _summary(design):
-    st.subheader("📊 Summary")
+    st.subheader(" Summary")
 
     col1, col2, col3 = st.columns(3)
 
@@ -146,7 +146,7 @@ def _summary(design):
 # MAIN PAGE
 # --------------------------------------------------
 def run():
-    st.header("📥 Download & Export PCB")
+    st.header(" Download & Export PCB")
 
     design = get_design()
 
