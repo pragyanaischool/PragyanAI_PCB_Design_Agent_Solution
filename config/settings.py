@@ -92,7 +92,7 @@ class Settings:
     # GROQ LLM CONFIG
     # =========================
     GROQ_API_KEY: str = get_secret("GROQ_API_KEY", "")
-    LLM_MODEL: str = get_secret("LLM_MODEL", "llama3-70b-8192")
+    LLM_MODEL: str = get_secret("LLM_MODEL", "openai/gpt-oss-120b")
     LLM_TEMPERATURE: float = get_secret("LLM_TEMPERATURE", 0.2, float)
     LLM_MAX_TOKENS: int = get_secret("LLM_MAX_TOKENS", 2048, int)
 
