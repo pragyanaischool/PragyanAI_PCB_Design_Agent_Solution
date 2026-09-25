@@ -1,4 +1,4 @@
-# app/pages/1_upload.py
+# app/pages/upload.py
 
 import streamlit as st
 import time
@@ -20,7 +20,7 @@ from utils import (
 # UI HEADER
 # --------------------------------------------------
 def _header():
-    st.header(" Upload & Process PCB Design")
+    st.header("📁 Upload & Process PCB Design")
     st.caption("Upload JSON / CSV / KiCad / Altium → Auto Design Pipeline")
 
 
@@ -94,7 +94,7 @@ def _preview_design(design):
 
 
 # --------------------------------------------------
-# MAIN PAGE
+# MAIN PAGE ROUTE (EXPOSED FOR APP.PY)
 # --------------------------------------------------
 def run():
     _header()
@@ -104,24 +104,23 @@ def run():
 
     if not file_data:
         show_info("Upload a file to begin")
-        return
+    else:
+        # Process button
+        if st.button(" Run PCB Pipeline", use_container_width=True):
+            try:
+                design = _run_pipeline_with_ui(file_data)
 
-    # Process button
-    if st.button(" Run PCB Pipeline", use_container_width=True):
-        try:
-            design = _run_pipeline_with_ui(file_data)
+                # Store in session
+                set_design(design)
 
-            # Store in session
-            set_design(design)
+                show_success("Design successfully generated!")
 
-            show_success("Design successfully generated!")
+                # Preview
+                _preview_design(design)
 
-            # Preview
-            _preview_design(design)
-
-        except Exception as e:
-            show_error(f"Error: {e}")
-            return
+            except Exception as e:
+                show_error(f"Error: {e}")
+                return
 
     # --------------------------------------------------
     # EXISTING DESIGN (SESSION)
@@ -134,13 +133,15 @@ def run():
 
         _preview_design(existing_design)
 
-        # Save option
-        if st.button(" Save Design"):
-            path = save_design(existing_design)
-            show_success(f"Saved at: {path}")
+        col_save, col_clear = st.columns(2)
+        with col_save:
+            # Save option
+            if st.button(" Save Design to Disk", use_container_width=True):
+                path = save_design(existing_design)
+                show_success(f"Saved at: {path}")
 
-        # Reset option
-        if st.button(" Clear Design"):
-            st.session_state.pop("design", None)
-            st.rerun()
-          
+        with col_clear:
+            # Reset option
+            if st.button(" Clear Design State", use_container_width=True):
+                st.session_state.pop("design", None)
+                st.rerun()
