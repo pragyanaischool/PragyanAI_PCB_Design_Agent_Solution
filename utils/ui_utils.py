@@ -42,7 +42,6 @@ def clear_design():
 # --------------------------------------------------
 # FILE UTILITIES
 # --------------------------------------------------
-'''
 def save_uploaded_file(uploaded_file) -> Path:
     """
     Save uploaded file to disk
@@ -55,7 +54,7 @@ def save_uploaded_file(uploaded_file) -> Path:
 
     return file_path
 
-'''
+
 def save_design(design: Dict[str, Any], filename: str = None) -> Path:
     """
     Save processed design JSON
